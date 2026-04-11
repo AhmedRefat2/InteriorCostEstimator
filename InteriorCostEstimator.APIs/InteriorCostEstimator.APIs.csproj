@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\InteriorCostEstimator.Application\InteriorCostEstimator.Application.csproj" />
     <ProjectReference Include="..\InteriorCostEstimator.Domain\InteriorCostEstimator.Domain.csproj" />
     <ProjectReference Include="..\InteriorCostEstimator.Infrastructure\InteriorCostEstimator.Infrastructure.csproj" />
   </ItemGroup>
