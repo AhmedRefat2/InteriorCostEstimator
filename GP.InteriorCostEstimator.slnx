@@ -1,7 +1,7 @@
 <Solution>
-  <Project Path="E:/Grduation Project/GP.InteriorCostEstimator/InteriorCostEstimator.APIs/InteriorCostEstimator.APIs.csproj" />
-  <Project Path="E:/Grduation Project/GP.InteriorCostEstimator/InteriorCostEstimator.Application/InteriorCostEstimator.Application.csproj" />
-  <Project Path="E:/Grduation Project/GP.InteriorCostEstimator/InteriorCostEstimator.Domain/InteriorCostEstimator.Domain.csproj" />
-  <Project Path="E:/Grduation Project/GP.InteriorCostEstimator/InteriorCostEstimator.Infrastructure/InteriorCostEstimator.Infrastructure.csproj" />
-  <Project Path="E:/Grduation Project/GP.InteriorCostEstimator/InteriorCostEstimator.UnitTests/InteriorCostEstimator.UnitTests.csproj" />
+  <Project Path="InteriorCostEstimator.APIs/InteriorCostEstimator.APIs.csproj" />
+  <Project Path="InteriorCostEstimator.Application/InteriorCostEstimator.Application.csproj" />
+  <Project Path="InteriorCostEstimator.Domain/InteriorCostEstimator.Domain.csproj" />
+  <Project Path="InteriorCostEstimator.Infrastructure/InteriorCostEstimator.Infrastructure.csproj" />
+  <Project Path="InteriorCostEstimator.UnitTests/InteriorCostEstimator.UnitTests.csproj" />
 </Solution>
