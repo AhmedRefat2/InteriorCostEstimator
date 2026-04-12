@@ -1,5 +1,6 @@
 
 using InteriorCostEstimator.Application.Features.AuthFeature.Services;
+using InteriorCostEstimator.Application.Features.ProductFeature.Services;
 using InteriorCostEstimator.Domain.Entities;
 using InteriorCostEstimator.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -52,6 +53,9 @@ namespace InteriorCostEstimator.APIs
                             Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
                     };
                 });
+
+
+            builder.Services.AddScoped<IProductService, ProductService>();
 
             var app = builder.Build();
 
