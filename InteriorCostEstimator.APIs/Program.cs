@@ -1,4 +1,3 @@
-
 using InteriorCostEstimator.Application.Features.AuthFeature.Services;
 using InteriorCostEstimator.Domain.Entities;
 using InteriorCostEstimator.Infrastructure.Persistence;
@@ -18,6 +17,8 @@ namespace InteriorCostEstimator.APIs
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             builder.Services.AddOpenApi();
 
@@ -73,6 +74,8 @@ namespace InteriorCostEstimator.APIs
             {
                 app.MapOpenApi();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 
