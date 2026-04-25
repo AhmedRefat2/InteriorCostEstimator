@@ -7,7 +7,7 @@ namespace InteriorCostEstimator.Application.Features.CategoryFeature.Services
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<CategoryDto>> GetAllAsync();
+        Task<IEnumerable<CategoryDto>> GetAllAsync(Guid vendorId);
 
         Task AddAsync(AddCategoryRequest request);
     }

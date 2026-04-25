@@ -23,13 +23,23 @@ namespace InteriorCostEstimator.APIs.Controllers
 
 
 
+        //[HttpGet]
+        //public async Task<IActionResult> GetAll()
+        //{
+        //    return Ok(await _service.GetAllAsync());
+        //}
+
+        [Authorize(Roles = "Vendor")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _service.GetAllAsync());
+
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            var vendorId = _context.Vendors.Where(v => v.UserId == userId).Select(v => v.Id).FirstOrDefault();
+
+            return Ok(await _service.GetAllByVendorIdAsync(vendorId));
         }
-
-
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)

@@ -7,7 +7,7 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.Services
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductDto>> GetAllAsync();
+        Task<IEnumerable<ProductDto>> GetAllByVendorIdAsync(Guid vendorId);
 
         Task<ProductDto?> GetByIdAsync(Guid id);
 

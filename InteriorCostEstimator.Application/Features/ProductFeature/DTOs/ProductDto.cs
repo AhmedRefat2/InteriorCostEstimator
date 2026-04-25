@@ -28,6 +28,7 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.DTOs
 
         public decimal Height { get; set; }
 
+        public string Size { get; set; } = string.Empty;
         public string CategoryName { get; set; } = string.Empty;
     }
 }

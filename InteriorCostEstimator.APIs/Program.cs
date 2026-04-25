@@ -1,6 +1,7 @@
 using InteriorCostEstimator.Application.Features.AuthFeature.Services;
 using InteriorCostEstimator.Application.Features.CategoryFeature.Services;
 using InteriorCostEstimator.Application.Features.ProductFeature.Services;
+using InteriorCostEstimator.Application.Features.VendorFeature.Services;
 using InteriorCostEstimator.Domain.Entities;
 using InteriorCostEstimator.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -58,7 +59,7 @@ namespace InteriorCostEstimator.APIs
 
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
-
+            builder.Services.AddScoped<IVendorService, VendorService>();
 
 
             var app = builder.Build();

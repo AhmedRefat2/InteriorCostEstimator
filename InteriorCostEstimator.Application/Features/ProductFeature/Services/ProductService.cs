@@ -18,10 +18,11 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.Services
         }
 
 
-        public async Task<IEnumerable<ProductDto>> GetAllAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllByVendorIdAsync(Guid vendorId)
         {
             return await _context.Products
                 .Include(p => p.Category)
+                .Where(p => p.VendorId == vendorId)
                 .Select(p => new ProductDto
                 {
                     Id = p.Id,
@@ -35,7 +36,8 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.Services
                     Length = p.Length,
                     Width = p.Width,
                     Height = p.Height,
-                    CategoryName = p.Category.Name
+                    CategoryName = p.Category.Name,
+                    Size = $"{p.Length} x {p.Width} x {p.Height} cm"
                 })
                 .ToListAsync();
         }
@@ -60,7 +62,8 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.Services
                      Length = p.Length,
                      Width = p.Width,
                      Height = p.Height,
-                     CategoryName = p.Category.Name
+                     CategoryName = p.Category.Name,
+                     Size = $"{p.Length} x {p.Width} x {p.Height} cm"
                  })
                  .FirstOrDefaultAsync();
         }

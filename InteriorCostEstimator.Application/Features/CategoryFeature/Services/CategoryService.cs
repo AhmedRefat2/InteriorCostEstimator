@@ -17,17 +17,26 @@ namespace InteriorCostEstimator.Application.Features.CategoryFeature.Services
             _context = context;
         }
 
+        // different vendor
+        // category with no products should not be returned
+        // category with products from other vendor should not be returned
 
-        public async Task<IEnumerable<CategoryDto>> GetAllAsync()
+
+
+        public async Task<IEnumerable<CategoryDto>> GetAllAsync(Guid vendorId)
         {
-            return await _context.Categories
+
+            var categories = await _context.Categories
                 .Select(c => new CategoryDto
                 {
                     Id = c.Id,
                     Name = c.Name,
-                    NumberOfProducts = c.NumberOfProducts
+                    NumberOfProducts = _context.Products.Count(p => p.CategoryId == c.Id && p.VendorId == vendorId)
                 })
                 .ToListAsync();
+
+
+            return categories.Where(c => c.NumberOfProducts > 0);
         }
 
 
