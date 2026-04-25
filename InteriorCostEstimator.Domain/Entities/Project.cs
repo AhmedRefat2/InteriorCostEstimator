@@ -27,6 +27,8 @@ namespace InteriorCostEstimator.Domain.Entities
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public decimal CustomerBudget { get; set; }
+
         // Foreign Key
         public string UserId { get; set; }
 

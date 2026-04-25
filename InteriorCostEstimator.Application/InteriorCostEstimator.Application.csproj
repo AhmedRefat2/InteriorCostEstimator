@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InteriorCostEstimator.Domain\InteriorCostEstimator.Domain.csproj" />
+    <ProjectReference Include="..\InteriorCostEstimator.Infrastructure\InteriorCostEstimator.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

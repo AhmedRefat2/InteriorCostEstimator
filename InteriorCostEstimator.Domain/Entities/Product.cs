@@ -12,8 +12,6 @@ namespace InteriorCostEstimator.Domain.Entities
 
         public string Description { get; set; } = string.Empty;
 
-        public string Category { get; set; } = string.Empty;// bed, sofa, lamp...
-
         public decimal Price { get; set; }
 
         public string ImageUrl { get; set; } = string.Empty;
@@ -21,6 +19,20 @@ namespace InteriorCostEstimator.Domain.Entities
         public int Stock { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        // New Fields
+        public decimal Length { get; set; }
+
+        public decimal Width { get; set; }
+
+        public decimal Height { get; set; }
+
+        public string Material { get; set; } = string.Empty;
+
+        // FK
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; } = null!;
 
         // Foreign Key
         public Guid VendorId { get; set; }

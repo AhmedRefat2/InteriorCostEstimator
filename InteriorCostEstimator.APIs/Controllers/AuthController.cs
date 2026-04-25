@@ -17,7 +17,7 @@ namespace InteriorCostEstimator.APIs.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterRequest request)
+        public async Task<IActionResult> Register(VendorRegisterRequest request)
         {
             var result = await _authService.RegisterAsync(request);
             return Ok(result);
