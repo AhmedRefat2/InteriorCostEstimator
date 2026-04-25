@@ -7,7 +7,7 @@ namespace InteriorCostEstimator.Application.Features.AuthFeature.Services
 {
     public interface IAuthService
     {
-        Task<AuthResponse> RegisterAsync(RegisterRequest request);
+        Task<AuthResponse> RegisterAsync(VendorRegisterRequest request);
         Task<AuthResponse> LoginAsync(LoginRequest request);
     }
 }

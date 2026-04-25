@@ -1,6 +1,7 @@
 ﻿using InteriorCostEstimator.Application.Features.AuthFeature.DTOs;
 using InteriorCostEstimator.Application.Features.AuthFeature.Services;
 using InteriorCostEstimator.Domain.Entities;
+using InteriorCostEstimator.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -15,16 +16,18 @@ namespace InteriorCostEstimator.Application.Features.AuthFeature.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly AppDbContext _context;
 
         public AuthService(UserManager<ApplicationUser> userManager,
-                           IConfiguration configuration)
+                           IConfiguration configuration, AppDbContext context)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _context = context;
         }
 
 
-        public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
+        public async Task<AuthResponse> RegisterAsync(VendorRegisterRequest request)
         {
             // Check Password
             if (request.Password != request.ConfirmPassword)
@@ -45,6 +48,25 @@ namespace InteriorCostEstimator.Application.Features.AuthFeature.Services
             // Add Role
             await _userManager.AddToRoleAsync(user, request.Role);
 
+            if(request.Role == "Vendor")
+            {
+                // If Vendor, create a Vendor entity and associate it with the user
+                var vendor = new Vendor
+                {
+                    CompanyName = request.CompanyName,
+                    Phone = request.Phone,
+                    WhatsAppLink = request.WhatsAppLink,
+                    Location = request.Location,
+                    Bio = request.Bio,
+                    LogoImageUrl = request.LogoImageUrl,
+                    UserId = user.Id
+                };
+                // Here you would typically save the vendor to the database
+                // For example, if you have a VendorRepository:
+                await _context.Vendors.AddAsync(vendor);
+                await  _context.SaveChangesAsync();
+
+            }
             // Generate Token
             var token = await GenerateToken(user);
 

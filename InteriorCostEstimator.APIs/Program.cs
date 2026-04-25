@@ -1,4 +1,6 @@
 using InteriorCostEstimator.Application.Features.AuthFeature.Services;
+using InteriorCostEstimator.Application.Features.CategoryFeature.Services;
+using InteriorCostEstimator.Application.Features.ProductFeature.Services;
 using InteriorCostEstimator.Domain.Entities;
 using InteriorCostEstimator.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -54,6 +56,11 @@ namespace InteriorCostEstimator.APIs
                     };
                 });
 
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -78,7 +85,8 @@ namespace InteriorCostEstimator.APIs
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
-
+            
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
