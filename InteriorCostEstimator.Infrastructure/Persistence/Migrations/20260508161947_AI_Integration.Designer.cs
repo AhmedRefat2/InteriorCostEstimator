@@ -4,6 +4,7 @@ using InteriorCostEstimator.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260508161947_AI_Integration")]
+    partial class AI_Integration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -308,7 +311,8 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("ProjectId")
+                        .IsUnique();
 
                     b.ToTable("Proposals");
                 });
@@ -592,8 +596,8 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("InteriorCostEstimator.Domain.Entities.Proposal", b =>
                 {
                     b.HasOne("InteriorCostEstimator.Domain.Entities.Project", "Project")
-                        .WithMany("Proposals")
-                        .HasForeignKey("ProjectId")
+                        .WithOne("Proposal")
+                        .HasForeignKey("InteriorCostEstimator.Domain.Entities.Proposal", "ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -699,7 +703,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 
                     b.Navigation("MatchedProducts");
 
-                    b.Navigation("Proposals");
+                    b.Navigation("Proposal");
                 });
 
             modelBuilder.Entity("InteriorCostEstimator.Domain.Entities.Proposal", b =>

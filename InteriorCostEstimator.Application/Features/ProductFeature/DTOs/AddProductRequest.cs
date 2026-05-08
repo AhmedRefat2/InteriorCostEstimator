@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,7 +14,7 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.DTOs
 
         public string Description { get; set; } = string.Empty;
 
-        public string ImageUrl { get; set; } = string.Empty;
+        public IFormFile Image { get; set; } 
 
         public int Stock { get; set; }
 

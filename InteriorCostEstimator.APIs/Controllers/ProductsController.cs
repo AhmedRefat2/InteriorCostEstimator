@@ -55,7 +55,7 @@ namespace InteriorCostEstimator.APIs.Controllers
 
         [Authorize(Roles = "Vendor")]
         [HttpPost]
-        public async Task<IActionResult> Add(AddProductRequest request)
+        public async Task<IActionResult> Add([FromForm] AddProductRequest request)
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 

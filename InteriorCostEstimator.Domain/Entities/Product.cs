@@ -39,5 +39,7 @@ namespace InteriorCostEstimator.Domain.Entities
 
         // Navigation
         public Vendor Vendor { get; set; }
+
+        public int AI_Id { get; set; }
     }
 }

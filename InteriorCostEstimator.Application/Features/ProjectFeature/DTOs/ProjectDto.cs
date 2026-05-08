@@ -1,19 +1,11 @@
-﻿using System;
+﻿using InteriorCostEstimator.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace InteriorCostEstimator.Domain.Entities
+namespace InteriorCostEstimator.Application.Features.ProjectFeature.DTOs
 {
-
-    public enum ProjectStatus
-    {
-        Uploaded = 1,
-        Processing = 2,
-        Completed = 3
-    }
-
-
-    public class Project
+    public class ProjectDto
     {
         public Guid Id { get; set; }
 
@@ -31,16 +23,14 @@ namespace InteriorCostEstimator.Domain.Entities
         public decimal CustomerBudget { get; set; }
 
         public decimal Processing_Time { get; set; }
-        // Foreign Key
-        public string UserId { get; set; }
+        //// Foreign Key
+        //public string UserId { get; set; }
 
-        // Navigation
-        public ApplicationUser User { get; set; }
+        //// Navigation
+        //public ApplicationUser User { get; set; }
 
-        public List<DetectedObject> DetectedObjects { get; set; } = new();
+        public List<AiDetectedItemDto> DetectedObjects { get; set; } = new();
 
-        public List<MatchedProduct> MatchedProducts { get; set; } = new();
-
-        public List<Proposal?> Proposals { get; set; }
+        public Proposal? Proposal { get; set; }
     }
 }

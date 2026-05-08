@@ -1,4 +1,5 @@
 ﻿using InteriorCostEstimator.Application.Features.ProductFeature.DTOs;
+using InteriorCostEstimator.Application.Features.ProjectFeature.Services;
 using InteriorCostEstimator.Domain.Entities;
 using InteriorCostEstimator.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,14 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.Services
     public class ProductService : IProductService
     {
         private readonly AppDbContext _context;
+        private readonly IFileService _fileService;
+        private readonly IAiService _aiService;
 
-        public ProductService(AppDbContext context)
+        public ProductService(AppDbContext context, IFileService fileService, IAiService aiService)
         {
             _context = context;
+            _fileService = fileService;
+            _aiService = aiService;
         }
 
 
@@ -26,6 +31,7 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.Services
                 .Select(p => new ProductDto
                 {
                     Id = p.Id,
+                    AI_Id = p.AI_Id,
                     Name = p.Name,
                     Price = p.Price,
                     Description = p.Description,
@@ -74,10 +80,11 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.Services
         {
             Product product = new()
             {
+                AI_Id = Math.Abs(Guid.NewGuid().GetHashCode()),
                 Name = request.Name,
                 Price = request.Price,
                 Description = request.Description,
-                ImageUrl = request.ImageUrl,
+                ImageUrl = await _fileService.UploadImageAsync(request.Image,"Products"),
                 Stock = request.Stock,
                 Material = request.Material,
                 Length = request.Length,
@@ -97,7 +104,12 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.Services
                 _context.Products.Add(product);
 
                 await _context.SaveChangesAsync();
-            
+
+                await _aiService.AddProductToAiAsync(
+                     request.Image,
+                     product.AI_Id
+                    );
+
             }
 
             else

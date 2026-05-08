@@ -1,6 +1,8 @@
 using InteriorCostEstimator.Application.Features.AuthFeature.Services;
 using InteriorCostEstimator.Application.Features.CategoryFeature.Services;
+using InteriorCostEstimator.Application.Features.ExcelFeature.Services;
 using InteriorCostEstimator.Application.Features.ProductFeature.Services;
+using InteriorCostEstimator.Application.Features.ProjectFeature.Services;
 using InteriorCostEstimator.Application.Features.VendorFeature.Services;
 using InteriorCostEstimator.Domain.Entities;
 using InteriorCostEstimator.Infrastructure.Persistence;
@@ -60,6 +62,19 @@ namespace InteriorCostEstimator.APIs
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IVendorService, VendorService>();
+            builder.Services.AddScoped<ExcelSeederService>();
+            builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddScoped<IFileService, FileService>();
+
+            builder.Services.AddHttpClient<IAiService, AiService>(
+    client =>
+    {
+        client.BaseAddress =
+            new Uri(
+        builder.Configuration["AISettings:BaseUrl"]!);
+    });
+            builder.Services.AddScoped<IProjectService, ProjectService>();
 
 
             var app = builder.Build();
@@ -75,6 +90,21 @@ namespace InteriorCostEstimator.APIs
                     if (!await roleManager.RoleExistsAsync(role))
                         await roleManager.CreateAsync(new IdentityRole(role));
                 }
+
+                var services = scope.ServiceProvider;
+
+                var context =
+                    services.GetRequiredService<AppDbContext>();
+
+                // لو فيه products already
+                if (!context.Products.Any())
+                {
+                    var seeder =
+                        services.GetRequiredService<ExcelSeederService>();
+
+                    await seeder.SeedCategoriesAndProducts(
+                        "Data/IKEA_Egypt_Furniture.xlsx");
+                }
             }
 
             // Configure the HTTP request pipeline.
@@ -87,9 +117,9 @@ namespace InteriorCostEstimator.APIs
 
             app.UseHttpsRedirection();
             
+            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
