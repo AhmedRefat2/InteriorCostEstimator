@@ -8,7 +8,11 @@ namespace InteriorCostEstimator.Domain.Entities
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; } = string.Empty;// bed, sofa...
+        public string Type { get; set; } = string.Empty;
+
+        public decimal Confidence { get; set; }
+
+        public string Crop_Url { get; set; }
 
         // Foreign Key
         public Guid ProjectId { get; set; }

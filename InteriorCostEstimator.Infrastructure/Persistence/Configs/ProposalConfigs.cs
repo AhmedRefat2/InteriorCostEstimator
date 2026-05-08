@@ -27,8 +27,8 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Configs
 
             // One-to-One with Project
             builder.HasOne(p => p.Project)
-                .WithOne(p => p.Proposal)
-                .HasForeignKey<Proposal>(p => p.ProjectId)
+                .WithMany(p => p.Proposals)
+                .HasForeignKey(p => p.ProjectId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

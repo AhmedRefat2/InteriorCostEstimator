@@ -21,4 +21,9 @@
     <ProjectReference Include="..\InteriorCostEstimator.Infrastructure\InteriorCostEstimator.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\Products\" />
+    <Folder Include="wwwroot\uploads\projects\" />
+  </ItemGroup>
+
 </Project>

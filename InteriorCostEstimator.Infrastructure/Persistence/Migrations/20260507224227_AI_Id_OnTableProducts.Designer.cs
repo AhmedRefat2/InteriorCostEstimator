@@ -4,6 +4,7 @@ using InteriorCostEstimator.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260507224227_AI_Id_OnTableProducts")]
+    partial class AI_Id_OnTableProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,20 +121,13 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Confidence")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Crop_Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Type")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -246,10 +242,6 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
                     b.Property<decimal>("CustomerBudget")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Detection_Image_Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -259,9 +251,6 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<decimal>("Processing_Time")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("RoomType")
                         .IsRequired()
@@ -308,7 +297,8 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectId");
+                    b.HasIndex("ProjectId")
+                        .IsUnique();
 
                     b.ToTable("Proposals");
                 });
@@ -592,8 +582,8 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("InteriorCostEstimator.Domain.Entities.Proposal", b =>
                 {
                     b.HasOne("InteriorCostEstimator.Domain.Entities.Project", "Project")
-                        .WithMany("Proposals")
-                        .HasForeignKey("ProjectId")
+                        .WithOne("Proposal")
+                        .HasForeignKey("InteriorCostEstimator.Domain.Entities.Proposal", "ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -699,7 +689,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 
                     b.Navigation("MatchedProducts");
 
-                    b.Navigation("Proposals");
+                    b.Navigation("Proposal");
                 });
 
             modelBuilder.Entity("InteriorCostEstimator.Domain.Entities.Proposal", b =>

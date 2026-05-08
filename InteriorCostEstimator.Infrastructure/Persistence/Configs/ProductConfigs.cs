@@ -20,7 +20,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Configs
             builder.Property(p => p.Description)
                 .HasMaxLength(1000);
 
-            
+            builder.Property(p => p.AI_Id);
 
             builder.Property(p => p.Price)
                 .HasColumnType("decimal(18,2)");
