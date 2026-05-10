@@ -35,7 +35,6 @@ namespace InteriorCostEstimator.Domain.Entities
 
         public Guid ProductId { get; set; }
 
-        public decimal Price { get; set; }
 
         public int Quantity { get; set; }
 
@@ -43,6 +42,10 @@ namespace InteriorCostEstimator.Domain.Entities
         public Proposal Proposal { get; set; }
 
         public Product Product { get; set; }
+
+        public decimal UnitPrice { get; set; }
+
+        public decimal TotalPrice { get; set; }
     }
 
 }

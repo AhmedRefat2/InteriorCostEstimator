@@ -3,6 +3,7 @@ using InteriorCostEstimator.Application.Features.CategoryFeature.Services;
 using InteriorCostEstimator.Application.Features.ExcelFeature.Services;
 using InteriorCostEstimator.Application.Features.ProductFeature.Services;
 using InteriorCostEstimator.Application.Features.ProjectFeature.Services;
+using InteriorCostEstimator.Application.Features.ProposalFeature.Services;
 using InteriorCostEstimator.Application.Features.VendorFeature.Services;
 using InteriorCostEstimator.Domain.Entities;
 using InteriorCostEstimator.Infrastructure.Persistence;
@@ -64,7 +65,7 @@ namespace InteriorCostEstimator.APIs
             builder.Services.AddScoped<IVendorService, VendorService>();
             builder.Services.AddScoped<ExcelSeederService>();
             builder.Services.AddHttpContextAccessor();
-
+            builder.Services.AddScoped< IProposalService, ProposalService>();
             builder.Services.AddScoped<IFileService, FileService>();
 
             builder.Services.AddHttpClient<IAiService, AiService>(
@@ -77,7 +78,29 @@ namespace InteriorCostEstimator.APIs
             builder.Services.AddScoped<IProjectService, ProjectService>();
 
 
+            builder.Services.AddCors(options =>
+            {
+                //options.AddPolicy("AllowFrontend",
+                //    policy =>
+                //    {
+                //        policy.WithOrigins(
+                //            "http://localhost:5174"
+                //        )
+                //        .AllowAnyHeader()
+                //        .AllowAnyMethod();
+                //    });
+
+                options.AddPolicy("AllowAll",
+                     policy =>
+                     {
+                         policy.AllowAnyOrigin()
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                     });
+            });
+
             var app = builder.Build();
+
 
             using (var scope = app.Services.CreateScope())
             {
@@ -116,11 +139,15 @@ namespace InteriorCostEstimator.APIs
             app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
-            
+
+            //app.UseCors("AllowFrontend");
+            app.UseCors("AllowAll");
+
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.MapGet("/", () => Results.Redirect("/swagger"));
             app.MapControllers();
 
             app.Run();

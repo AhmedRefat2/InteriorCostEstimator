@@ -154,5 +154,31 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.Services
 
             await _context.SaveChangesAsync();
         }
+
+       
+            public async Task<IEnumerable<ProductDto>> GetAllAsync()
+             {
+            return await _context.Products
+                .Include(p => p.Category)
+                .Select(p => new ProductDto
+                {
+                    Id = p.Id,
+                    AI_Id = p.AI_Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Description = p.Description,
+                    ImageUrl = p.ImageUrl,
+                    Stock = p.Stock,
+                    InStock = p.Stock > 0,
+                    Material = p.Material,
+                    Length = p.Length,
+                    Width = p.Width,
+                    Height = p.Height,
+                    CategoryName = p.Category.Name,
+                    Size = $"{p.Length} x {p.Width} x {p.Height} cm"
+                })
+                .ToListAsync();
+             }
+    
     }
 }

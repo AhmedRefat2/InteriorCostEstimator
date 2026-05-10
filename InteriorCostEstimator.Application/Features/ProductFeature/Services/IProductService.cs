@@ -16,5 +16,7 @@ namespace InteriorCostEstimator.Application.Features.ProductFeature.Services
         Task UpdateAsync(Guid id, UpdateProductRequest request);
 
         Task DeleteAsync(Guid id);
+
+        Task<IEnumerable<ProductDto>> GetAllAsync();
     }
 }

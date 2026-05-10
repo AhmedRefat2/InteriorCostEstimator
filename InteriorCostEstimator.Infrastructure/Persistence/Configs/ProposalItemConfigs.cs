@@ -13,7 +13,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Configs
         {
             builder.HasKey(p => p.Id);
 
-            builder.Property(p => p.Price)
+            builder.Property(p => p.UnitPrice)
                 .HasColumnType("decimal(18,2)");
 
             builder.Property(p => p.Quantity)

@@ -91,5 +91,12 @@ namespace InteriorCostEstimator.APIs.Controllers
             return Ok("Product Deleted Successfully");
         }
 
+        [AllowAnonymous]
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            return Ok(await _service.GetAllAsync());
+        }
+
     }
 }
