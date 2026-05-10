@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,6 +17,6 @@ namespace InteriorCostEstimator.Application.Features.AuthFeature.DTOs
 
         public string? Bio { get; set; } = string.Empty;
 
-        public string? LogoImageUrl { get; set; } = string.Empty;
+        public IFormFile? LogoImage { get; set; }
     }
 }

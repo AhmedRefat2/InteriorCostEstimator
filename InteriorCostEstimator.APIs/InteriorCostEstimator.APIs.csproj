@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
+    <Folder Include="wwwroot\uploads\Vendors\" />
     <Folder Include="wwwroot\uploads\Products\" />
     <Folder Include="wwwroot\uploads\projects\" />
   </ItemGroup>
