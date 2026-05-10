@@ -1,5 +1,6 @@
 ﻿using InteriorCostEstimator.Application.Features.AuthFeature.DTOs;
 using InteriorCostEstimator.Application.Features.AuthFeature.Services;
+using InteriorCostEstimator.Application.Features.ProjectFeature.Services;
 using InteriorCostEstimator.Domain.Entities;
 using InteriorCostEstimator.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Identity;
@@ -17,13 +18,15 @@ namespace InteriorCostEstimator.Application.Features.AuthFeature.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
+        private readonly IFileService _fileService;
 
         public AuthService(UserManager<ApplicationUser> userManager,
-                           IConfiguration configuration, AppDbContext context)
+                           IConfiguration configuration, AppDbContext context, IFileService fileService)
         {
             _userManager = userManager;
             _configuration = configuration;
             _context = context;
+            _fileService = fileService;
         }
 
 
@@ -58,7 +61,7 @@ namespace InteriorCostEstimator.Application.Features.AuthFeature.Services
                     WhatsAppLink = request.WhatsAppLink,
                     Location = request.Location,
                     Bio = request.Bio,
-                    LogoImageUrl = request.LogoImageUrl,
+                    LogoImageUrl = await _fileService.UploadImageAsync(request.LogoImage, "Vendors"),
                     UserId = user.Id
                 };
                 // Here you would typically save the vendor to the database

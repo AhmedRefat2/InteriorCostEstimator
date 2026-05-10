@@ -109,7 +109,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("InteriorCostEstimator.Domain.Entities.DetectedObject", b =>
@@ -137,7 +137,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("DetectedObjects");
+                    b.ToTable("DetectedObjects", (string)null);
                 });
 
             modelBuilder.Entity("InteriorCostEstimator.Domain.Entities.MatchedProduct", b =>
@@ -169,7 +169,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("MatchedProducts");
+                    b.ToTable("MatchedProducts", (string)null);
                 });
 
             modelBuilder.Entity("InteriorCostEstimator.Domain.Entities.Product", b =>
@@ -231,7 +231,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("VendorId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("InteriorCostEstimator.Domain.Entities.Project", b =>
@@ -279,7 +279,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("InteriorCostEstimator.Domain.Entities.Proposal", b =>
@@ -310,7 +310,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("Proposals");
+                    b.ToTable("Proposals", (string)null);
                 });
 
             modelBuilder.Entity("InteriorCostEstimator.Domain.Entities.ProposalItem", b =>
@@ -340,7 +340,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ProposalId");
 
-                    b.ToTable("ProposalItems");
+                    b.ToTable("ProposalItems", (string)null);
                 });
 
             modelBuilder.Entity("InteriorCostEstimator.Domain.Entities.Vendor", b =>
@@ -388,7 +388,7 @@ namespace InteriorCostEstimator.Infrastructure.Persistence.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Vendors");
+                    b.ToTable("Vendors", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
