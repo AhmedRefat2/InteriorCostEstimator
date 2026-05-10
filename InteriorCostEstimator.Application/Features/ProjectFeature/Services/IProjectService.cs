@@ -10,5 +10,11 @@ namespace InteriorCostEstimator.Application.Features.ProjectFeature.Services
         Task<object> CreateProjectAsync(
             string userId,
             CreateProjectRequest request);
+
+        Task<List<ProjectDto>> GetAllProjectsAsync(string userId);
+
+        Task<ProjectDto> GetProjectByIdAsync(
+            string userId,
+            Guid projectId);
     }
 }

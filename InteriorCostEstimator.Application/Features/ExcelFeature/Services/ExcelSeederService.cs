@@ -1,6 +1,7 @@
 ﻿using InteriorCostEstimator.Application.Features.CategoryFeature.Services;
 using InteriorCostEstimator.Domain.Entities;
 using InteriorCostEstimator.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Identity;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -36,42 +37,19 @@ namespace InteriorCostEstimator.Application.Features.ExcelFeature.Services
                 height: numbers[2]
             );
 
-            //if (string.IsNullOrWhiteSpace(measurements))
-            //    return (0, 0, 0);
-
-            //// remove cm and spaces
-            //measurements = measurements
-            //    .ToLower()
-            //    .Replace("cm", "")
-            //    .Trim();
-
-            //// split by x
-            //var parts = measurements.Split('x');
-
-            //if (parts.Length != 3)
-            //    return (0, 0, 0);
-
-            //bool widthParsed =
-            //    decimal.TryParse(parts[0].Trim(), out decimal width);
-
-            //bool lengthParsed =
-            //    decimal.TryParse(parts[1].Trim(), out decimal length);
-
-            //bool heightParsed =
-            //    decimal.TryParse(parts[2].Trim(), out decimal height);
-
-            //return (
-            //    widthParsed ? width : 0,
-            //    lengthParsed ? length : 0,
-            //    heightParsed ? height : 0
-            //);
+          
         }
 
         private readonly AppDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ExcelSeederService(AppDbContext context)
+        public ExcelSeederService(AppDbContext context, UserManager<ApplicationUser> userManager,
+    RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task SeedCategoriesAndProducts(string filePath)
@@ -89,9 +67,35 @@ namespace InteriorCostEstimator.Application.Features.ExcelFeature.Services
             // 1. CREATE DEFAULT VENDOR
             // =========================
 
+
+            ApplicationUser user = new ApplicationUser
+            {
+                UserName = "ikea@seed.com",
+                Email = "ikea@seed.com",
+                FullName = "IKEA Seed Vendor"
+            };
+
+            var result = await _userManager.CreateAsync(
+                user,
+                "Ikea@123456"
+            );
+
+            if (!result.Succeeded)
+            {
+                throw new Exception(
+                    string.Join(",",
+                    result.Errors.Select(e => e.Description))
+                );
+            }
+
+            await _userManager.AddToRoleAsync(
+                user,
+                "Vendor"
+            );
+
             var vendor = new Vendor
             {
-                UserId = "59836cca-f4bf-486e-b661-89529316fc63",
+                UserId = user.Id,
                 Id = Guid.NewGuid(),
                 CompanyName = "IKEA",
             };

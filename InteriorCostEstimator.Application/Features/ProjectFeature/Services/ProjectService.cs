@@ -23,6 +23,50 @@ namespace InteriorCostEstimator.Application.Features.ProjectFeature.Services
             _fileService = fileService;
         }
 
+        private async Task<List<AiDetectedItemDto>>
+    GetDetectedObjectsAsync(Guid projectId)
+        {
+            return await _context.DetectedObjects
+                .Where(d => d.ProjectId == projectId)
+                .Include(d => d.MatchedProducts)
+                    .ThenInclude(m => m.Product)
+                        .ThenInclude(p => p.Category)
+                .Select(d => new AiDetectedItemDto
+                {
+                    Type = d.Type,
+                    Confidence = d.Confidence,
+                    Crop_Url = d.Crop_Url,
+
+                    Recommendations = d.MatchedProducts
+                        .OrderBy(m => m.Rank)
+                        .Select(m => new MatchedProductDto
+                        {
+                            Similarity_Score = m.SimilarityScore,
+                            Rank = m.Rank,
+
+                            Product = new ProductDto
+                            {
+                                Id = m.Product.Id,
+                                AI_Id = m.Product.AI_Id,
+                                Name = m.Product.Name,
+                                Price = m.Product.Price,
+                                Description = m.Product.Description,
+                                ImageUrl = m.Product.ImageUrl,
+                                Stock = m.Product.Stock,
+                                InStock = m.Product.Stock > 0,
+                                Material = m.Product.Material,
+                                Length = m.Product.Length,
+                                Width = m.Product.Width,
+                                Height = m.Product.Height,
+                                Size =
+                                  $"{m.Product.Length}x{m.Product.Width}x{m.Product.Height}",
+                                CategoryName = m.Product.Category.Name
+                            }
+                        }).ToList()
+                }).ToListAsync();
+        }
+
+
         public async Task<object> CreateProjectAsync(
             string userId,
             CreateProjectRequest request)
@@ -133,6 +177,71 @@ namespace InteriorCostEstimator.Application.Features.ProjectFeature.Services
                              }
                          }).ToList()
                  }).ToListAsync();
+
+            return new ProjectDto
+            {
+                Id = project.Id,
+                Name = project.Name,
+                CreatedAt = project.CreatedAt,
+                CustomerBudget = project.CustomerBudget,
+                Detection_Image_Url = project.Detection_Image_Url,
+                ImageUrl = project.ImageUrl,
+                Processing_Time = project.Processing_Time,
+                RoomType = project.RoomType,
+                Status = project.Status,
+                DetectedObjects = detectedObjects
+            };
+        }
+
+        public async Task<List<ProjectDto>>
+    GetAllProjectsAsync(string userId)
+        {
+            var projects = await _context.Projects
+                .Where(p => p.UserId == userId)
+                .OrderByDescending(p => p.CreatedAt)
+                .ToListAsync();
+
+            List<ProjectDto> result = new();
+
+            foreach (var project in projects)
+            {
+                var detectedObjects =
+                    await GetDetectedObjectsAsync(project.Id);
+
+                result.Add(new ProjectDto
+                {
+                    Id = project.Id,
+                    Name = project.Name,
+                    CreatedAt = project.CreatedAt,
+                    CustomerBudget = project.CustomerBudget,
+                    Detection_Image_Url = project.Detection_Image_Url,
+                    ImageUrl = project.ImageUrl,
+                    Processing_Time = project.Processing_Time,
+                    RoomType = project.RoomType,
+                    Status = project.Status,
+                    DetectedObjects = detectedObjects
+                });
+            }
+
+            return result;
+        }
+
+
+        public async Task<ProjectDto>
+    GetProjectByIdAsync(
+    string userId,
+    Guid projectId)
+        {
+            var project = await _context.Projects
+                .FirstOrDefaultAsync(p =>
+                    p.Id == projectId &&
+                    p.UserId == userId);
+
+            if (project is null)
+                throw new Exception("Project not found");
+
+            var detectedObjects =
+                await GetDetectedObjectsAsync(project.Id);
 
             return new ProjectDto
             {
